@@ -41,7 +41,7 @@ grino:brew          a rdfs:Property ;
 
 grino:locate        a rdfs:Property ;
                     rdfs:domain grino:brewer ;
-                    rdfs:range grinos:address .
+                    rdfs:range grino:address .
 
 grino:city          a rdfs:Property ;
                     rdfs:domain grino:address ;
