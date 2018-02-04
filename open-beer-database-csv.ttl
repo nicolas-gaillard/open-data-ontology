@@ -24,7 +24,7 @@ grino:address0 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "42.2689, -89.0907" .
 
-grino:style_scotch_ale a grino:style ;
+grino:style_scotch_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:category_british_ale a grino:category .
@@ -82,7 +82,7 @@ grino:address3 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "39.7539, -104.989" .
 
-grino:style_american_style_pale_ale a grino:style ;
+grino:style_american_style_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:category_north_american_ale a grino:category .
@@ -227,7 +227,7 @@ grino:address11 a grino:address ;
 	grino:country "Germany" ;
 	grino:gps "50.0224, 10.83" .
 
-grino:style_south_german_style_hefeweizen a grino:style ;
+grino:style_south_german_style_hefeweizen a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_ale .
 
 grino:category_german_ale a grino:category .
@@ -250,7 +250,7 @@ grino:address12 a grino:address ;
 	grino:country "Germany" ;
 	grino:gps "49.8891, 10.887" .
 
-grino:style_traditional_german_style_bock a grino:style ;
+grino:style_traditional_german_style_bock a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:category_german_lager a grino:category .
@@ -342,7 +342,7 @@ grino:address17 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "42.8171, -89.6306" .
 
-grino:style_american_style_amberred_ale a grino:style ;
+grino:style_american_style_amberred_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer18 a grino:beer ;
@@ -362,7 +362,7 @@ grino:address18 a grino:address ;
 	grino:country "Philippines" ;
 	grino:gps "14.5833, 120.967" .
 
-grino:style_german_style_schwarzbier a grino:style ;
+grino:style_german_style_schwarzbier a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer19 a grino:beer ;
@@ -400,7 +400,7 @@ grino:address20 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.3507, -74.6583" .
 
-grino:style_american_style_stout a grino:style ;
+grino:style_american_style_stout a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer21 a grino:beer ;
@@ -456,7 +456,7 @@ grino:address23 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "43.0177, -89.4232" .
 
-grino:style_old_ale a grino:style ;
+grino:style_old_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer24 a grino:beer ;
@@ -547,7 +547,7 @@ grino:address28 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "43.5323, -90.0099" .
 
-grino:style_porter a grino:style ;
+grino:style_porter a grino:styleProp ;
 	rdfs:subClassOf grino:category_irish_ale .
 
 grino:category_irish_ale a grino:category .
@@ -570,7 +570,7 @@ grino:address29 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "44.0886, -87.6576" .
 
-grino:style_american_style_lager a grino:style ;
+grino:style_american_style_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_lager .
 
 grino:category_north_american_lager a grino:category .
@@ -629,7 +629,7 @@ grino:address32 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "44.9765, -93.2747" .
 
-grino:style_english_style_pale_mild_ale a grino:style ;
+grino:style_english_style_pale_mild_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer33 a grino:beer ;
@@ -720,7 +720,7 @@ grino:address37 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "41.9625, -91.6918" .
 
-grino:style_american_style_brown_ale a grino:style ;
+grino:style_american_style_brown_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer38 a grino:beer ;
@@ -1133,7 +1133,7 @@ grino:address60 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "34.4702, -114.35" .
 
-grino:style_light_american_wheat_ale_or_lager a grino:style ;
+grino:style_light_american_wheat_ale_or_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:category_other_style a grino:category .
@@ -1195,7 +1195,7 @@ grino:address63 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.5929, -105.07" .
 
-grino:style_belgian_style_fruit_lambic a grino:style ;
+grino:style_belgian_style_fruit_lambic a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:category_belgian_and_french_ale a grino:category .
@@ -1345,7 +1345,7 @@ grino:address71 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "38.5551, -121.43" .
 
-grino:style_winter_warmer a grino:style ;
+grino:style_winter_warmer a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer72 a grino:beer ;
@@ -1526,7 +1526,7 @@ grino:address81 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "61.2181, -149.9" .
 
-grino:style_american_style_india_pale_ale a grino:style ;
+grino:style_american_style_india_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer82 a grino:beer ;
@@ -1718,7 +1718,7 @@ grino:address91 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "43.0445, -87.9626" .
 
-grino:style_american_style_light_lager a grino:style ;
+grino:style_american_style_light_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_lager .
 
 grino:beer92 a grino:beer ;
@@ -1821,7 +1821,7 @@ grino:address96 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0061, -75.6942" .
 
-grino:style_belgian_style_white a grino:style ;
+grino:style_belgian_style_white a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer97 a grino:beer ;
@@ -1844,7 +1844,7 @@ grino:address97 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0061, -75.6942" .
 
-grino:style_german_style_oktoberfest a grino:style ;
+grino:style_german_style_oktoberfest a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer98 a grino:beer ;
@@ -1867,7 +1867,7 @@ grino:address98 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0061, -75.6942" .
 
-grino:style_american_style_imperial_stout a grino:style ;
+grino:style_american_style_imperial_stout a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer99 a grino:beer ;
@@ -2570,7 +2570,7 @@ grino:address137 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.5929, -105.07" .
 
-grino:style_german_style_pilsener a grino:style ;
+grino:style_german_style_pilsener a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer138 a grino:beer ;
@@ -3281,7 +3281,7 @@ grino:address178 a grino:address ;
 	grino:country "Belgium" ;
 	grino:gps "50.7046, 5.822" .
 
-grino:style_other_belgian_style_ales a grino:style ;
+grino:style_other_belgian_style_ales a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer179 a grino:beer ;
@@ -3987,7 +3987,7 @@ grino:address217 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "39.7535, -104.998" .
 
-grino:style_extra_special_bitter a grino:style ;
+grino:style_extra_special_bitter a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer218 a grino:beer ;
@@ -4657,7 +4657,7 @@ grino:address254 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "43.0508, -76.1617" .
 
-grino:style_belgian_style_tripel a grino:style ;
+grino:style_belgian_style_tripel a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer255 a grino:beer ;
@@ -5087,7 +5087,7 @@ grino:address278 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0438, -76.2984" .
 
-grino:style_imperial_or_double_india_pale_ale a grino:style ;
+grino:style_imperial_or_double_india_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer279 a grino:beer ;
@@ -5923,7 +5923,7 @@ grino:address325 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "32.7153, -117.157" .
 
-grino:style_south_german_style_weizenbock a grino:style ;
+grino:style_south_german_style_weizenbock a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_ale .
 
 grino:beer326 a grino:beer ;
@@ -10478,7 +10478,7 @@ grino:address580 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.2369, -76.072" .
 
-grino:style_oatmeal_stout a grino:style ;
+grino:style_oatmeal_stout a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer581 a grino:beer ;
@@ -10501,7 +10501,7 @@ grino:address581 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "38.4418, -122.712" .
 
-grino:style_golden_or_blonde_ale a grino:style ;
+grino:style_golden_or_blonde_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer582 a grino:beer ;
@@ -10544,7 +10544,7 @@ grino:address583 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "41.9658, -72.793" .
 
-grino:style_german_style_brown_alealtbier a grino:style ;
+grino:style_german_style_brown_alealtbier a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_ale .
 
 grino:beer584 a grino:beer ;
@@ -10567,7 +10567,7 @@ grino:address584 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "42.9585, -85.6735" .
 
-grino:style_fruit_beer a grino:style ;
+grino:style_fruit_beer a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer585 a grino:beer ;
@@ -10747,7 +10747,7 @@ grino:address593 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.2118, -76.1232" .
 
-grino:style_german_style_heller_bockmaibock a grino:style ;
+grino:style_german_style_heller_bockmaibock a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer594 a grino:beer ;
@@ -10789,7 +10789,7 @@ grino:address595 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "38.4418, -122.712" .
 
-grino:style_special_bitter_or_best_bitter a grino:style ;
+grino:style_special_bitter_or_best_bitter a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer596 a grino:beer ;
@@ -10812,7 +10812,7 @@ grino:address596 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "61.1473, -149.844" .
 
-grino:style_belgian_style_dark_strong_ale a grino:style ;
+grino:style_belgian_style_dark_strong_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer597 a grino:beer ;
@@ -10835,7 +10835,7 @@ grino:address597 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "61.1473, -149.844" .
 
-grino:style_belgian_style_pale_strong_ale a grino:style ;
+grino:style_belgian_style_pale_strong_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer598 a grino:beer ;
@@ -10858,7 +10858,7 @@ grino:address598 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "42.79, -86.1041" .
 
-grino:style_american_style_barley_wine_ale a grino:style ;
+grino:style_american_style_barley_wine_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer599 a grino:beer ;
@@ -11041,7 +11041,7 @@ grino:address608 a grino:address ;
 	grino:country "Belgium" ;
 	grino:gps "50.8425, 2.6362" .
 
-grino:style_dark_american_belgo_style_ale a grino:style ;
+grino:style_dark_american_belgo_style_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer609 a grino:beer ;
@@ -11206,7 +11206,7 @@ grino:address617 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "44.9732, -93.2479" .
 
-grino:style_classic_english_style_pale_ale a grino:style ;
+grino:style_classic_english_style_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer618 a grino:beer ;
@@ -11265,7 +11265,7 @@ grino:address620 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "32.7668, -117.195" .
 
-grino:style_german_style_doppelbock a grino:style ;
+grino:style_german_style_doppelbock a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer621 a grino:beer ;
@@ -14472,7 +14472,7 @@ grino:address799 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "42.9585, -85.6735" .
 
-grino:style_american_rye_ale_or_lager a grino:style ;
+grino:style_american_rye_ale_or_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer800 a grino:beer ;
@@ -14673,7 +14673,7 @@ grino:address810 a grino:address ;
 	grino:country "Belgium" ;
 	grino:gps "50.8961, 2.7222" .
 
-grino:style_belgian_style_dubbel a grino:style ;
+grino:style_belgian_style_dubbel a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer811 a grino:beer ;
@@ -16326,7 +16326,7 @@ grino:address902 a grino:address ;
 	grino:country "United Kingdom" ;
 	grino:gps "52.241, 0.7157" .
 
-grino:style_american_style_cream_ale_or_lager a grino:style ;
+grino:style_american_style_cream_ale_or_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer903 a grino:beer ;
@@ -18898,7 +18898,7 @@ grino:address1042 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "41.0638, -80.0556" .
 
-grino:style_irish_style_red_ale a grino:style ;
+grino:style_irish_style_red_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_irish_ale .
 
 grino:beer1043 a grino:beer ;
@@ -19331,7 +19331,7 @@ grino:address1064 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "61.1473, -149.844" .
 
-grino:style_sweet_stout a grino:style ;
+grino:style_sweet_stout a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer1065 a grino:beer ;
@@ -19391,7 +19391,7 @@ grino:address1067 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "43.3152, -83.7314" .
 
-grino:style_ordinary_bitter a grino:style ;
+grino:style_ordinary_bitter a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer1068 a grino:beer ;
@@ -19590,7 +19590,7 @@ grino:address1077 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.7215, -73.9575" .
 
-grino:style_french__belgian_style_saison a grino:style ;
+grino:style_french__belgian_style_saison a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer1078 a grino:beer ;
@@ -21719,7 +21719,7 @@ grino:address1193 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0267, -105.248" .
 
-grino:style_english_style_india_pale_ale a grino:style ;
+grino:style_english_style_india_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer1194 a grino:beer ;
@@ -27464,7 +27464,7 @@ grino:address1510 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.5894, -105.063" .
 
-grino:style_scottish_style_light_ale a grino:style ;
+grino:style_scottish_style_light_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer1511 a grino:beer ;
@@ -29056,7 +29056,7 @@ grino:address1598 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "38.7683, -75.3107" .
 
-grino:style_pumpkin_beer a grino:style ;
+grino:style_pumpkin_beer a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer1599 a grino:beer ;
@@ -30165,7 +30165,7 @@ grino:address1659 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.6732, -75.2249" .
 
-grino:style_belgian_style_pale_ale a grino:style ;
+grino:style_belgian_style_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer1660 a grino:beer ;
@@ -32899,7 +32899,7 @@ grino:address1807 a grino:address ;
 	grino:country "Belgium" ;
 	grino:gps "50.1999, 5.2277" .
 
-grino:style_belgian_style_quadrupel a grino:style ;
+grino:style_belgian_style_quadrupel a grino:styleProp ;
 	rdfs:subClassOf grino:category_belgian_and_french_ale .
 
 grino:beer1808 a grino:beer ;
@@ -39754,7 +39754,7 @@ grino:address2186 a grino:address ;
 	grino:country "New Zealand" ;
 	grino:gps "-45.0331, 168.661" .
 
-grino:style_herb_and_spice_beer a grino:style ;
+grino:style_herb_and_spice_beer a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer2187 a grino:beer ;
@@ -50596,7 +50596,7 @@ grino:address2765 a grino:address ;
 	grino:state "Kanto" ;
 	grino:country "Japan" .
 
-grino:style_american_style_strong_pale_ale a grino:style ;
+grino:style_american_style_strong_pale_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer2766 a grino:beer ;
@@ -50638,7 +50638,7 @@ grino:address2767 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0166, -105.219" .
 
-grino:style_strong_ale a grino:style ;
+grino:style_strong_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer2768 a grino:beer ;
@@ -50699,7 +50699,7 @@ grino:address2770 a grino:address ;
 	grino:state "MA" ;
 	grino:country "United States" .
 
-grino:style_specialty_beer a grino:style ;
+grino:style_specialty_beer a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer2771 a grino:beer ;
@@ -50721,7 +50721,7 @@ grino:address2771 a grino:address ;
 	grino:state "Ontario" ;
 	grino:country "Canada" .
 
-grino:style_smoke_beer a grino:style ;
+grino:style_smoke_beer a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer2772 a grino:beer ;
@@ -50763,7 +50763,7 @@ grino:address2773 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "30.5049, -89.944" .
 
-grino:style_vienna_style_lager a grino:style ;
+grino:style_vienna_style_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer2774 a grino:beer ;
@@ -52005,7 +52005,7 @@ grino:address2839 a grino:address ;
 	grino:city "St. Petersburg" ;
 	grino:country "Russia" .
 
-grino:style_baltic_style_porter a grino:style ;
+grino:style_baltic_style_porter a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_lager .
 
 grino:category_other_lager a grino:category .
@@ -52030,7 +52030,7 @@ grino:address2840 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "30.5049, -89.944" .
 
-grino:style_specialty_honey_lager_or_ale a grino:style ;
+grino:style_specialty_honey_lager_or_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer2841 a grino:beer ;
@@ -68504,7 +68504,7 @@ grino:address3713 a grino:address ;
 	grino:country "Ireland" ;
 	grino:gps "53.3433, -6.2846" .
 
-grino:style_classic_irish_style_dry_stout a grino:style ;
+grino:style_classic_irish_style_dry_stout a grino:styleProp ;
 	rdfs:subClassOf grino:category_irish_ale .
 
 grino:beer3714 a grino:beer ;
@@ -78320,7 +78320,7 @@ grino:address4239 a grino:address ;
 	grino:country "Germany" ;
 	grino:gps "53.0787, 8.7901" .
 
-grino:style_european_low_alcohol_lager a grino:style ;
+grino:style_european_low_alcohol_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer4240 a grino:beer ;
@@ -78342,7 +78342,7 @@ grino:address4240 a grino:address ;
 	grino:state "WI" ;
 	grino:country "United States" .
 
-grino:style_imperial_or_double_red_ale a grino:style ;
+grino:style_imperial_or_double_red_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer4241 a grino:beer ;
@@ -78382,7 +78382,7 @@ grino:brewer4242 a grino:brewer ;
 grino:address4242 a grino:address ;
 	grino:country "Japan" .
 
-grino:style_out_of_category a grino:style ;
+grino:style_out_of_category a grino:styleProp ;
 	rdfs:subClassOf grino:category_other_style .
 
 grino:beer4243 a grino:beer ;
@@ -89631,7 +89631,7 @@ grino:address4851 a grino:address ;
 	grino:state "OH" ;
 	grino:country "United States" .
 
-grino:style_kellerbier___ale a grino:style ;
+grino:style_kellerbier___ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_ale .
 
 grino:beer4852 a grino:beer ;
@@ -91521,7 +91521,7 @@ grino:brewer4955 a grino:brewer ;
 grino:address4955 a grino:address ;
 	grino:country "India" .
 
-grino:style_bamberg_style_bock_rauchbier a grino:style ;
+grino:style_bamberg_style_bock_rauchbier a grino:styleProp ;
 	rdfs:subClassOf grino:category_german_lager .
 
 grino:beer4956 a grino:beer ;
@@ -92239,7 +92239,7 @@ grino:address4992 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.8726, -74.2964" .
 
-grino:style_american_style_dark_lager a grino:style ;
+grino:style_american_style_dark_lager a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_lager .
 
 grino:beer4993 a grino:beer ;
@@ -92281,7 +92281,7 @@ grino:address4994 a grino:address ;
 	grino:country "Ireland" ;
 	grino:gps "53.3433, -6.2846" .
 
-grino:style_foreign_export_style_stout a grino:style ;
+grino:style_foreign_export_style_stout a grino:styleProp ;
 	rdfs:subClassOf grino:category_irish_ale .
 
 grino:beer4995 a grino:beer ;
@@ -98594,7 +98594,7 @@ grino:address5332 a grino:address ;
 	grino:country "United States" ;
 	grino:gps "40.0061, -75.6942" .
 
-grino:style_american_style_india_black_ale a grino:style ;
+grino:style_american_style_india_black_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_north_american_ale .
 
 grino:beer5333 a grino:beer ;
@@ -102836,7 +102836,7 @@ grino:address5558 a grino:address ;
 	grino:state "Merseyside" ;
 	grino:country "United Kingdom" .
 
-grino:style_english_style_dark_mild_ale a grino:style ;
+grino:style_english_style_dark_mild_ale a grino:styleProp ;
 	rdfs:subClassOf grino:category_british_ale .
 
 grino:beer5559 a grino:beer ;
