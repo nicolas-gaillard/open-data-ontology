@@ -1,0 +1,68 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix grino: <http://beer.beer/data#> .
+
+# ==========
+# RDF SCHEMA
+# ==========
+
+# Classes
+# -------
+grino:beer          a rdfs:Class .
+grino:brewer        a rdfs:Class .
+grino:address       a rdfs:Class .
+grino:styleCLASSE   a rdfs:Class .
+grino:category      a rdfs:Class .
+
+# Sub classes
+# -----------
+grino:styleCLASSE   rdfs:subClassOf grino:category .
+
+# Properties
+# ----------
+grino:alc_vol       a rdfs:Property ;
+                    rdfs:domain grino:beer ;
+                    rdfs:range xsd:double .
+
+grino:UPC           a rdfs:Property ;
+                    rdfs:domain grino:beer ;
+                    rdfs:range xsd:int .
+
+grino:SRM           a rdfs:Property ;
+                    rdfs:domain grino:beer ;
+                    rdfs:range xsd:int .
+
+grino:brew          a rdfs:Property ;
+                    rdfs:domain grino:brewer ;
+                    rdfs:range grino:beer .
+
+grino:locate        a rdfs:Property ;
+                    rdfs:domain grino:brewer ;
+                    rdfs:range grinos:address .
+
+grino:city          a rdfs:Property ;
+                    rdfs:domain grino:address ;
+                    rdfs:range xsd:string .
+
+grino:state         a rdfs:Property ;
+                    rdfs:domain grino:address ;
+                    rdfs:range xsd:string .
+
+grino:country       a rdfs:Property ;
+                    rdfs:domain grino:address ;
+                    rdfs:range xsd:string .
+
+grino:gps           a rdfs:Property ;
+                    rdfs:domain grino:address ;
+                    rdfs:range xsd:string .
+
+grino:website       a rdfs:Property ;
+                    rdfs:domain grino:brewer ;
+                    rdfs:range xsd:string .
+
+grino:style         a rdfs:Property ;
+                    rdfs:domain grino:beer ;
+                    rdfs:range grino:styleCLASSE .
