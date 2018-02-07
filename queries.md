@@ -8,11 +8,41 @@ https://github.com/Rathachai/d3rdf/blob/master/README.md
 ```
 
 ### Classification des bières par couleur, group by
-```
+
+Cette requete pour récupérer les couleurs différentes.
+```sparql
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT ?color
+WHERE {
+  ?beer		a 		n1:beer;
+         	n1:SRM	?color;
+			rdfs:label ?name .
+}
+GROUP BY ?color
 ```
 
+On affiche les couleurs disponibles, lors du clique sur une des couleurs,
+on affiche alors les bières de cette couleur.
+
+TODO: ajouter le nombre de bières par couleur. (COUNT)
+
 ### Nombre de bières d’une catégorie par pays d’origine, count
-```
+```sparql
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?country) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer		a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+  			n1:locate ?adress.
+  ?adress	n1:country ?country.
+}
+GROUP BY ?country
 ```
 
 ### Les plus gros producteurs de bières différentes, max
