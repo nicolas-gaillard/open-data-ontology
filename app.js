@@ -6,40 +6,62 @@ document.getElementById("go").onclick = function () {
     var url = 'http://localhost:3030/open-beer/sparql';
     var prefix = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>'
     query = buildQuery();
-
     // console.log(query);
-    getSparqlData(prefix + query, url)
+    getSparqlData(prefix + query, url, 'brewer')
 };
+
+function getBrewer(brewer) {
+    var url = 'http://localhost:3030/open-beer/sparql';
+
+    brewId = brewer.split("#")[1]
+    console.log(brewId);
+
+    var query = `
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX n1: <http://beer.beer/data#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT DISTINCT ?brewer ?name ?website ?address
+    WHERE { ?brewer a n1:brewer .
+            ?brewer rdfs:label ?name .
+  			?brewer n1:locate ?address .
+  			OPTIONAL { ?brewer  n1:website  ?website }
+    FILTER (?brewer = n1:${brewId})
+    }`
+
+    console.log(query)
+    getSparqlData(query, url, 'null');
+}
 
 function buildQuery() {
     query = `
-    SELECT DISTINCT ?beer ?name ?alc ?srm ?style ?b_name
+    SELECT DISTINCT ?beer ?name ?alcohol_degree ?SRM ?style ?brewer
     WHERE { ?beer a n1:beer .
             ?beer rdfs:label ?name .
-            ?beer n1:SRM ?srm .
-            ?beer n1:alc_vol ?alc .
+            ?beer n1:SRM ?SRM .
+            ?beer n1:alc_vol ?alcohol_degree .
             ?beer n1:style ?style .
             ?brewer a n1:brewer .
-            ?brewer rdfs:label ?b_name .
     }
     LIMIT 20`;
     // var val = $('#alcohol').slider("option", "value");
     return query;
 }
 
-function getSparqlData(query, url) {
+function getSparqlData(query, url, button) {
     var table = $("#results");
     table.text(" ");
 
-    console.log(query);
+    // console.log(query);
     var queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
+
+    console.log(queryUrl);
 
     $.ajax({
         dataType: "jsonp",
         url: queryUrl,
         success: function (data) {
 
-            console.log(data);
+            // console.log(data);
 
             // get the table element
             var table = $("#results");
@@ -58,8 +80,14 @@ function getSparqlData(query, url) {
             cpt = 1;
             // for each result, make a table row and add it to the table.
             for (rowIdx in bindings) {
-                table.append(getTableRow(headerVars, bindings[rowIdx], cpt));
+                table.append(getTableRow(headerVars, bindings[rowIdx], cpt, button));
                 cpt++;
+            }
+
+            if (button == 'brewer') {
+                $(".seeBrewer").click(function () {
+                    getBrewer($(this).val());
+                });
             }
         },
         error: function (error) {
@@ -77,27 +105,29 @@ function getTableHeaders(headerVars) {
     return trHeaders;
 }
 
-function getTableRow(headerVars, rowData, cpt) {
+function getTableRow(headerVars, rowData, cpt, button) {
     var tr = "<tr><td>" + cpt + "</td>";
     for (var i in headerVars) {
         tr += getTableCell(headerVars[i], rowData);
     }
 
-    // if (button == brewer) {
-    //     tr += "<td><button value='" + rowData[headerVars[headerVars.length - 1]]["value"] + "' class='seeBrewer'>See brewer</button></td> </tr>";
-    // } else if (button == address) {
-    //     tr += "<td><button value='" + rowData[headerVars[0]]["value"] + "' class='seeMovieGenre'>Voir films</button></td> </tr>";
-    // } else {
-    //     tr += "</tr>";
-    // }
-    tr += "</tr>";
+    if (button == 'brewer') {
+        tr += "<td><button value='" + rowData[headerVars[headerVars.length - 1]]["value"] + "' class='seeBrewer'>See brewer</button></td> </tr>";
+        // } else if (button == address) {
+        //     tr += "<td><button value='" + rowData[headerVars[0]]["value"] + "' class='seeMovieGenre'>Voir films</button></td> </tr>";
+    } else {
+        tr += "</tr>";
+    }
+    // tr += "</tr>";
     return tr;
 }
 
 function getTableCell(fieldName, rowData) {
     var td = "<td>";
     var fieldData = rowData[fieldName];
-    td += fieldData["value"];
+    if (fieldData == null) td += ''
+    else if (fieldData["value"].indexOf('#') !== -1) td += fieldData["value"].split("#")[1];
+    else td += fieldData["value"];
     td += "</td>";
     return td;
 }
@@ -151,6 +181,9 @@ $(function () {
         " - " + $("#slider-range-srm").slider("values", 1) + " SRM");
 });
 
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 function sendQuery(url, query) {
     var queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";

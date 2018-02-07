@@ -73,3 +73,28 @@ WHERE { ?beer_216 a n1:beer .
 ORDER BY ASC(?alc_vol_237)
 LIMIT 20
 ```
+
+#### Test query
+```
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT DISTINCT ?brewer ?name ?website ?brew ?address 
+    WHERE { ?brewer a n1:brewer .
+            ?brewer rdfs:label ?name .
+			?b a n1:beer .
+  			?b rdfs:label ?brew.
+  			?brewer n1:locate ?address .
+  			OPTIONAL { ?brewer  n1:websute  ?website }
+    }
+LIMIT 20
+```
+
+```
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+    SELECT DISTINCT ?brewer ?name ?website ?address 
+    WHERE { ?brewer a n1:brewer .
+            ?brewer rdfs:label ?name .
+  			?brewer n1:locate ?address .
+  			OPTIONAL { ?brewer  n1:website  ?website }
+    }
+    LIMIT 200
+```
