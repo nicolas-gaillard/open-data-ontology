@@ -9,7 +9,7 @@ function query() {
 
     var url = "http://localhost:3030/open-beer/query";
 
-    var params = "testQuery";
+    var params = testQuery;
     var http = new XMLHttpRequest();
 
     http.open("GET", url + '?query=' + encodeURIComponent(testQuery) + '&format=json', true);
@@ -46,22 +46,22 @@ var sendQuery = function () {
         // },
         success: function (data) {
             console.log(data)
-            console.log(typeof data.results.bindings)
-            console.log(data.results.bindings)
+            // console.log(typeof data.results.bindings)
+            // console.log(data.results.bindings)
 
-            data.results.bindings.forEach(function (element) {
-                console.log(element);
-            });
+            // data.results.bindings.forEach(function (element) {
+            //     console.log(element);
+            // });
 
-            for (var k in data) {
-                if (k === "head") {
-                    console.log(k, data[k]);
-                    for (var l in data[k]) {
-                        console.log(l);
-                        console.log(data[k][l][0]);
-                    }
-                }
-            }
+            // for (var k in data) {
+            //     if (k === "head") {
+            //         console.log(k, data[k]);
+            //         for (var l in data[k]) {
+            //             console.log(l);
+            //             console.log(data[k][l][0]);
+            //         }
+            //     }
+            // }
 
         },
         error: function (error) {
