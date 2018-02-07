@@ -1,3 +1,5 @@
+# BESOIN DE GERER LE CAS OU LA REQUETE NE RETOURNE PAS DE VALEUR --> CASSE ACTUELLEMENT LA TABLE
+
 ### Schéma RDF --> Nico
 https://github.com/Rathachai/d3rdf/blob/master/README.md
 
