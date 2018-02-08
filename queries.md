@@ -47,6 +47,19 @@ GROUP BY ?country
 
 ### Les plus gros producteurs de bières différentes, max
 ```
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?name) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer		a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            rdfs:label ?name;
+  			n1:locate ?adress.
+}
+GROUP BY ?name
+ORDER BY DESC(?nbbeer)
 ```
 
 ### Alcool moyen des bières par pays --> moy, group by
