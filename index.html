@@ -20,10 +20,15 @@
         }
 
         table {
+            font-family: arial, sans-serif;
             border-collapse: collapse;
+            width: 100%;
         }
 
-        td {
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
             padding: .5em;
         }
 
@@ -77,6 +82,11 @@
 
     <div>
         <button type="button" id="test">Query</button>
+    </div>
+
+    <div>
+        <label for="nb-results">Nombre de résultats à afficher :</label>
+        <input id="nb-results" type="number" value="42">
     </div>
 
     <div class="beer-form">
