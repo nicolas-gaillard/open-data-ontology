@@ -1,14 +1,35 @@
-document.getElementById("test").onclick = function() {
+document.getElementById("test").onclick = function () {
   sendQuery();
 };
 
-document.getElementById("go").onclick = function() {
+document.getElementById("go").onclick = function () {
   const url = "http://localhost:3030/open-beer/sparql";
   var prefix = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1:
     <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>`;
   let query = buildQuery();
   getSparqlData(prefix + query, url, "brewer");
 };
+
+function getLimit() {
+  const limit = document.getElementById('nb-results').value;
+  return 'LIMIT ' + limit;
+}
+
+function getFilter(alc, srm) {
+  const alcMin = $('#slider-range-alc').slider("values", "0");
+  const alcMax = $('#slider-range-alc').slider("values", "1");
+  const srmMin = $('#slider-range-srm').slider("values", "0");
+  const srmMax = $('#slider-range-srm').slider("values", "1");
+
+  filter = 'FILTER(' + alc + ' >= "' + alcMin + '"\^\^xsd:double)';
+  filter += ' FILTER(' + alc + ' < "' + alcMax + '"\^\^xsd:double)';
+  filter += ' FILTER(' + srm + ' >= "' + srmMin + '"\^\^xsd:double)';
+  filter += ' FILTER(' + srm + ' < "' + srmMax + '"\^\^xsd:double)';
+
+  console.log(filter);
+
+  return filter;
+}
 
 function getBrewer(brewer) {
   const url = "http://localhost:3030/open-beer/sparql";
@@ -29,6 +50,9 @@ function getBrewer(brewer) {
 }
 
 function buildQuery() {
+  const limit = getLimit();
+  const filter = getFilter('?alcohol_degree', '?SRM');
+
   const query = `
     SELECT DISTINCT ?beer ?name ?alcohol_degree ?SRM ?style ?brewer
     WHERE { ?beer a n1:beer .
@@ -37,9 +61,9 @@ function buildQuery() {
             ?beer n1:alc_vol ?alcohol_degree .
             ?beer n1:style ?style .
             ?brewer a n1:brewer .
-    }
-    LIMIT 20`;
-  // var val = $('#alcohol').slider("option", "value");
+            ${filter}
+          }
+    ${limit}`;
   return query;
 }
 
@@ -69,12 +93,12 @@ function getSparqlData(query, url, button) {
         cpt++;
       }
       if (button == "brewer") {
-        $(".seeBrewer").click(function() {
+        $(".seeBrewer").click(function () {
           getBrewer($(this).val());
         });
       }
     },
-    error: function(error) {
+    error: function (error) {
       console.log("Error occured" + error);
     }
   });
@@ -85,6 +109,7 @@ function getTableHeaders(headerVars) {
   for (let i in headerVars) {
     trHeaders += "<th>" + headerVars[i] + "</th>";
   }
+  trHeaders += "<th>details</th>"
   trHeaders += "</tr>";
   return trHeaders;
 }
@@ -123,7 +148,7 @@ function getTableCell(fieldName, rowData) {
 // JQuery
 // ------
 
-$(function() {
+$(function () {
   $("#country").selectmenu();
 
   $("#brewers").selectmenu();
@@ -137,47 +162,47 @@ $(function() {
     min: 0,
     max: 100,
     values: [0, 100],
-    slide: function(event, ui) {
+    slide: function (event, ui) {
       $("#alcohol").val("°" + ui.values[0] + " - °" + ui.values[1]);
     }
   });
   $("#alcohol").val(
     "°" +
-      $("#slider-range-alc").slider("values", 0) +
-      " - °" +
-      $("#slider-range-alc").slider("values", 1)
+    $("#slider-range-alc").slider("values", 0) +
+    " - °" +
+    $("#slider-range-alc").slider("values", 1)
   );
 
-  $("#slider-range-ibu").slider({
-    range: true,
-    min: 0,
-    max: 93,
-    values: [0, 93],
-    slide: function(event, ui) {
-      $("#ibu").val(ui.values[0] + " - " + ui.values[1] + " IBT");
-    }
-  });
-  $("#ibu").val(
-    $("#slider-range-ibu").slider("values", 0) +
-      " - " +
-      $("#slider-range-ibu").slider("values", 1) +
-      " IBT"
-  );
+  // $("#slider-range-ibu").slider({
+  //   range: true,
+  //   min: 0,
+  //   max: 93,
+  //   values: [0, 93],
+  //   slide: function (event, ui) {
+  //     $("#ibu").val(ui.values[0] + " - " + ui.values[1] + " IBT");
+  //   }
+  // });
+  // $("#ibu").val(
+  //   $("#slider-range-ibu").slider("values", 0) +
+  //   " - " +
+  //   $("#slider-range-ibu").slider("values", 1) +
+  //   " IBT"
+  // );
 
   $("#slider-range-srm").slider({
     range: true,
     min: 0,
-    max: 47,
+    max: 50,
     values: [0, 47],
-    slide: function(event, ui) {
+    slide: function (event, ui) {
       $("#srm").val(ui.values[0] + " - " + ui.values[1] + " SRM");
     }
   });
   $("#srm").val(
     $("#slider-range-srm").slider("values", 0) +
-      " - " +
-      $("#slider-range-srm").slider("values", 1) +
-      " SRM"
+    " - " +
+    $("#slider-range-srm").slider("values", 1) +
+    " SRM"
   );
 });
 
@@ -225,7 +250,7 @@ $(function() {
 }*/
 
 // url / query
-let sendQuery = function() {
+let sendQuery = function () {
   let query =
     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
 
@@ -236,10 +261,10 @@ let sendQuery = function() {
     dataType: "jsonp", //jsonp
     url: queryUrl,
 
-    success: function(data) {
+    success: function (data) {
       console.log(data);
     },
-    error: function(error) {
+    error: function (error) {
       console.log(error);
     }
   });
