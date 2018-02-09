@@ -4,6 +4,19 @@
  *
  */
 const sourceURL = "http://griffon.tk:3030/tp/sparql";
+let countryToISO = {};
+const mapRequest = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (SAMPLE(?country) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer 		a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            n1:locate ?adress.
+  ?adress	  n1:country ?country.
+}
+GROUP BY ?country`;
 
 /*
  * Send query to server
@@ -25,11 +38,65 @@ function applyQuery(query, callback) {
   });
 }
 
+/*
+ * Compute dico to transform Country to ISO.
+ */
+function computeCountryToISO() {
+  let countries = Datamap.prototype.worldTopo.objects.world.geometries;
+  for (let country in countries) {
+    countryToISO[countries[country].properties.name] =
+      countries[country].properties.iso;
+  }
+}
+
+/*
+ * Process data to map
+ * @param {map} object - Datamap Object
+ * @param {data} JSON - Sparql query
+ */
+function mapProcess(map, data) {
+  let arrayJSON = [];
+  for (let rowIdx in data.results.bindings) {
+    let jsonTemp = {};
+    jsonTemp["name"] = data.results.bindings[rowIdx].NAME["value"];
+    jsonTemp["country"] = data.results.bindings[rowIdx].NAME["value"];
+    jsonTemp["centered"] =
+      countryToISO[data.results.bindings[rowIdx].NAME["value"]];
+    jsonTemp["radius"] =
+      2 * Math.log(parseFloat(data.results.bindings[rowIdx].nbbeer["value"]));
+    jsonTemp["fillKey"] = "RUS";
+    arrayJSON.push(jsonTemp);
+  }
+  map.bubbles(arrayJSON, {
+    popupTemplate: function(geo, data) {
+      return (
+        '<div class="hoverinfo">' +
+        data.country +
+        "</br>Nombre de bières:" +
+        Math.exp(data.radius / 2) +
+        ""
+      );
+    }
+  });
+}
+
 // ============ /\ MAP /\ ================= //
 
-var basic = new Datamap({
-  element: document.getElementById("chart_div")
+// TODO : put this at the begining
+let basic = new Datamap({
+  element: document.getElementById("chart_div"),
+  geographyConfig: {
+    popupOnHover: false,
+    highlightOnHover: false
+  },
+  fills: {
+    defaultFill: "#ABDDA4",
+    RUS: "orange"
+  }
 });
+
+computeCountryToISO();
+applyQuery(mapRequest, data => mapProcess(basic, data));
 
 // ======================================= //
 
