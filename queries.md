@@ -5,8 +5,34 @@ https://github.com/Rathachai/d3rdf/blob/master/README.md
 
 ### Bières sur une map (nombre de bières avec des ronds)
 ```
+SELECT ?country ?style ?city ?gps ?state
+  WHERE {
+    ?beer 		a 		n1:beer;
+				n1:style ?style.
+  	?brewer   	n1:brew ?beer;
+             	n1:locate ?adress.
+  	?adress	n1:country ?country;
+           	n1:city		?city;
+            n1:gps		?gps;
+            n1:state	?state.
+  }
 ```
+### Bière par pays pazr style
+```
+ PREFIX n1: <http://beer.beer/data#>
+ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
+
+SELECT ?country ?style
+  WHERE {
+    ?beer 		a 		n1:beer;
+				n1:style ?style.
+  	?brewer   	n1:brew ?beer;
+             	n1:locate ?adress.
+  	?adress	n1:country ?country.
+  }
+
+```
 ### Classification des bières par couleur, group by
 
 Cette requete pour récupérer les couleurs différentes.
@@ -30,6 +56,7 @@ On affiche les couleurs disponibles, lors du clique sur une des couleurs,
    TODO: ajouter le nombre de bières par couleur. (COUNT)
 
 ### Nombre de bières d’une catégorie par pays d’origine, count
+TODO: rajouter une categorie.
    ```sparql
  PREFIX n1: <http://beer.beer/data#>
  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -60,11 +87,25 @@ SELECT (SAMPLE(?name) AS ?NAME) (COUNT(?beer) as ?nbbeer)
 }
 GROUP BY ?name
 ORDER BY DESC(?nbbeer)
-  ```
+```
 
 ### Alcool moyen des bières par pays --> moy, group by
-  ```
-  ```
+```
+ PREFIX n1: <http://beer.beer/data#>
+ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?country) AS ?NAME) (AVG(?vol) as ?alcvol)
+  WHERE {
+    ?beer 		a 		n1:beer;
+            	n1:alc_vol	?vol.
+    ?brewer   	n1:brew ?beer;
+              	n1:locate ?adress.
+     ?adress	n1:country ?country.
+  }
+GROUP BY ?country
+ORDER BY DESC(?alcvol)
+```
 
 ### Formulaire pour faire des query plus poussées sur les bières --> Format web
   - Style --> to much values
