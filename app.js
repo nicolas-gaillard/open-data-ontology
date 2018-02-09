@@ -1,3 +1,30 @@
+/*
+ *
+ *
+ *
+ */
+const sourceURL = "http://griffon.tk:3030/tp/sparql";
+
+/*
+ * Send query to server
+ * @param {query} string - Sparql Query
+ * @param {process} function - Function to apply when success 
+ */
+function applyQuery(query, process) {
+  let queryUrl =
+    sourceURL + "?query=" + encodeURIComponent(query) + "&format=json";
+  $.ajax({
+    dataType: "jsonp",
+    url: queryUrl,
+    success: data => {
+      process(data);
+    },
+    error: err => {
+      console.log("Error occured" + error);
+    }
+  });
+}
+
 document.getElementById("test").onclick = function() {
   sendQuery();
 };
@@ -52,6 +79,7 @@ function getSparqlData(query, url, button) {
     dataType: "jsonp",
     url: queryUrl,
     success: data => {
+      console.log(data);
       // get the table element
       var table = $("#results");
       table.text();
