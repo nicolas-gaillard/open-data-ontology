@@ -145,14 +145,135 @@ function getTableCell(fieldName, rowData) {
   return td;
 }
 
+let sendQuery = function (query, callback) {
+  let url = "http://localhost:3030/open-beer/sparql";
+
+  let queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
+  $.ajax({
+    dataType: "jsonp", //jsonp
+    url: queryUrl,
+
+    success: function (data) {
+      callback(null, data);
+    },
+    error: function (error) {
+      callback(error, null);
+    }
+  });
+};
+
+function buildCategorySelect() {
+  const query = `
+    PREFIX n1: <http://beer.beer/data#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT DISTINCT ?category
+    WHERE {
+      ?beer a n1:beer ;
+            n1:style ?style .
+      ?category a n1:category.
+      ?style rdfs:subClassOf ?category .
+    }`;
+
+  // FILTER (?category = n1:category_north_american_ale)
+
+  const data = sendQuery(query, function (err, data) {
+    if (err) {
+      console.error(err);
+    }
+    console.log(data);
+
+    const select = $("#category");
+
+    //  FILTER (?category = n1:category_north_american_ale)
+    const bindings = data.results.bindings;
+
+    for (row in bindings) {
+      const category = bindings[row].category.value.split("#")[1];
+      // console.log('n1:' + category)
+      // console.log(category.split('category_')[1].replace(/_/g, ' '));
+
+      select.append($("<option/>").attr("value", 'n1:' + category).text(category.split('category_')[1].replace(/_/g, ' ')));
+    }
+  });
+}
+
+function buildBrewerSelect() {
+  const query = `
+  PREFIX n1: <http://beer.beer/data#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT DISTINCT ?name
+  WHERE {
+    ?brewer	a n1:brewer;
+            rdfs:label ?name.
+  }`
+
+  const data = sendQuery(query, function (err, data) {
+    if (err) {
+      console.error(err);
+    }
+    //console.log(data);
+
+    const select = $("#brewers");
+    const bindings = data.results.bindings;
+
+    for (row in bindings) {
+      select.append($("<option/>").attr("value", bindings[row].name.value).text(bindings[row].name.value));
+    }
+  });
+}
+
+function buildCountrySelect() {
+  const query = `
+    PREFIX n1: <http://beer.beer/data#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT DISTINCT ?pays
+    WHERE {
+      ?beer		a 		n1:beer.
+      ?brewer	n1:brew ?beer;
+            n1:locate ?adress.
+      ?adress	n1:country ?pays.
+    }`;
+
+  const data = sendQuery(query, function (err, data) {
+    if (err) {
+      console.error(err);
+    }
+    //console.log(data);
+
+    const select = $("#country");
+    const bindings = data.results.bindings;
+
+    for (row in bindings) {
+      select.append($("<option/>").attr("value", bindings[row].pays.value).text(bindings[row].pays.value));
+      //select.append($('<option/>').attr("value", bindings[row].pays.value).text(bindings[row].pays.value));
+      // console.log(bindings[row].pays.value);
+    }
+  });
+  // console.log(data);
+  // const bindings = data.results.bindings;
+
+  // for (row in bindings) {
+  //   console.log(row);
+  // }
+
+  //var select = $("#country")
+  // $.each(choices, function(a, b) {
+  //     select.append($("<option/>").attr("value", b).text(b));
+  // });
+  // $("#" + divName).append(select);
+}
+
 // JQuery
 // ------
 
 $(function () {
+
+  buildCountrySelect();
+  buildBrewerSelect();
+  buildCategorySelect()
+
   $("#country").selectmenu();
-
   $("#brewers").selectmenu();
-
   $("#category").selectmenu();
   // .selectmenu("menuWidget")
   // .addClass("overflow");
@@ -193,7 +314,7 @@ $(function () {
     range: true,
     min: 0,
     max: 50,
-    values: [0, 47],
+    values: [0, 50],
     slide: function (event, ui) {
       $("#srm").val(ui.values[0] + " - " + ui.values[1] + " SRM");
     }
@@ -248,24 +369,3 @@ $(function () {
   };
   http.send();
 }*/
-
-// url / query
-let sendQuery = function () {
-  let query =
-    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
-
-  let url = "http://localhost:3030/open-beer/sparql";
-
-  let queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
-  $.ajax({
-    dataType: "jsonp", //jsonp
-    url: queryUrl,
-
-    success: function (data) {
-      console.log(data);
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  });
-};
