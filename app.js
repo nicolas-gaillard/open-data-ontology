@@ -15,16 +15,31 @@ function getLimit() {
   return 'LIMIT ' + limit;
 }
 
-function getFilter(alc, srm) {
-  const alcMin = $('#slider-range-alc').slider("values", "0");
-  const alcMax = $('#slider-range-alc').slider("values", "1");
-  const srmMin = $('#slider-range-srm').slider("values", "0");
-  const srmMax = $('#slider-range-srm').slider("values", "1");
+function getFilter(alc, srm, q_country, q_category, q_brewer) {
+  const alcMin   = $('#slider-range-alc').slider("values", "0");
+  const alcMax   = $('#slider-range-alc').slider("values", "1");
+  const srmMin   = $('#slider-range-srm').slider("values", "0");
+  const srmMax   = $('#slider-range-srm').slider("values", "1");
+  const category = $("#category").val();
+  const brewer   = $("#brewers").val();
+  const country  = $("#country").val();
 
   filter = 'FILTER(' + alc + ' >= "' + alcMin + '"\^\^xsd:double)';
-  filter += ' FILTER(' + alc + ' < "' + alcMax + '"\^\^xsd:double)';
-  filter += ' FILTER(' + srm + ' >= "' + srmMin + '"\^\^xsd:double)';
-  filter += ' FILTER(' + srm + ' < "' + srmMax + '"\^\^xsd:double)';
+  filter += '\nFILTER(' + alc + ' < "' + alcMax + '"\^\^xsd:double)';
+  filter += '\nFILTER(' + srm + ' >= "' + srmMin + '"\^\^xsd:double)';
+  filter += '\nFILTER(' + srm + ' < "' + srmMax + '"\^\^xsd:double)';
+
+  if (category.length != 0) {
+    filter += '\nFILTER(' + q_category + ' = ' + category + ')';
+  }
+
+  if (brewer.length != 0) {
+    filter += '\nFILTER(' + q_brewer + ' = "' + brewer + '")';
+  }
+
+  if (country.length != 0) {
+    filter += '\nFILTER(' + q_country + ' = "' + country + '")';
+  }
 
   console.log(filter);
 
@@ -39,31 +54,45 @@ function getBrewer(brewer) {
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX n1: <http://beer.beer/data#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
     SELECT DISTINCT ?brewer ?name ?website ?address
-    WHERE { ?brewer a n1:brewer .
-            ?brewer rdfs:label ?name .
+    WHERE {
+        ?brewer a n1:brewer .
+        ?brewer rdfs:label ?name .
         ?brewer n1:locate ?address .
         OPTIONAL { ?brewer  n1:website  ?website }
-    FILTER (?brewer = n1:${brewId})
+        FILTER (?brewer = n1:${brewId})
     }`;
   getSparqlData(query, url, "null");
 }
 
 function buildQuery() {
   const limit = getLimit();
-  const filter = getFilter('?alcohol_degree', '?SRM');
+  const filter = getFilter('?alcohol_degree', '?SRM', '?country', '?category', '?brewer_name');
 
   const query = `
-    SELECT DISTINCT ?beer ?name ?alcohol_degree ?SRM ?style ?brewer
-    WHERE { ?beer a n1:beer .
-            ?beer rdfs:label ?name .
-            ?beer n1:SRM ?SRM .
-            ?beer n1:alc_vol ?alcohol_degree .
-            ?beer n1:style ?style .
-            ?brewer a n1:brewer .
-            ${filter}
-          }
-    ${limit}`;
+  SELECT DISTINCT ?beer ?name ?alcohol_degree ?SRM ?style ?brewer
+  WHERE {
+    ?beer a n1:beer .
+    ?beer rdfs:label ?name .
+    ?beer n1:SRM ?SRM .
+    ?beer n1:alc_vol ?alcohol_degree .
+    ?beer n1:style ?style .
+
+    ?brewer a n1:brewer .
+    ?brewer n1:brew ?beer .
+    ?brewer rdfs:label ?brewer_name .
+
+    ?brewer n1:locate ?address .
+    ?address a n1:address .
+    ?address n1:country ?country .
+
+    ?category a n1:category.
+    ?style rdfs:subClassOf ?category .
+    ${filter}
+  }
+  ${limit}`;
+
   return query;
 }
 
@@ -180,7 +209,7 @@ function buildCategorySelect() {
     if (err) {
       console.error(err);
     }
-    console.log(data);
+   // console.log(data);
 
     const select = $("#category");
 
