@@ -10,20 +10,28 @@ const sourceURL = "http://griffon.tk:3030/tp/sparql";
  * @param {query} string - Sparql Query
  * @param {process} function - Function to apply when success 
  */
-function applyQuery(query, process) {
+function applyQuery(query, callback) {
   let queryUrl =
     sourceURL + "?query=" + encodeURIComponent(query) + "&format=json";
   $.ajax({
     dataType: "jsonp",
     url: queryUrl,
     success: data => {
-      process(data);
+      callback(data);
     },
     error: err => {
       console.log("Error occured" + error);
     }
   });
 }
+
+// ============ /\ MAP /\ ================= //
+
+var basic = new Datamap({
+  element: document.getElementById("chart_div")
+});
+
+// ======================================= //
 
 document.getElementById("test").onclick = function() {
   sendQuery();
