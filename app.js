@@ -1,6 +1,6 @@
-document.getElementById("test").onclick = function () {
-  sendQuery();
-};
+// document.getElementById("test").onclick = function () {
+//   sendQuery();
+// };
 
 document.getElementById("go").onclick = function () {
   const url = "http://localhost:3030/open-beer/sparql";
@@ -96,6 +96,8 @@ function buildQuery() {
   return query;
 }
 
+// Set of functions which build the table
+// --------------------------------------
 function getSparqlData(query, url, button) {
   let table = $("#results");
   table.text(" ");
@@ -174,6 +176,8 @@ function getTableCell(fieldName, rowData) {
   return td;
 }
 
+// Send a query and get result with callback
+// -----------------------------------------
 let sendQuery = function (query, callback) {
   let url = "http://localhost:3030/open-beer/sparql";
 
@@ -191,6 +195,8 @@ let sendQuery = function (query, callback) {
   });
 };
 
+// Dynamically create input's option
+// ---------------------------------
 function buildCategorySelect() {
   const query = `
     PREFIX n1: <http://beer.beer/data#>
@@ -274,27 +280,13 @@ function buildCountrySelect() {
 
     for (row in bindings) {
       select.append($("<option/>").attr("value", bindings[row].pays.value).text(bindings[row].pays.value));
-      //select.append($('<option/>').attr("value", bindings[row].pays.value).text(bindings[row].pays.value));
       // console.log(bindings[row].pays.value);
     }
   });
-  // console.log(data);
-  // const bindings = data.results.bindings;
-
-  // for (row in bindings) {
-  //   console.log(row);
-  // }
-
-  //var select = $("#country")
-  // $.each(choices, function(a, b) {
-  //     select.append($("<option/>").attr("value", b).text(b));
-  // });
-  // $("#" + divName).append(select);
 }
 
 // JQuery
 // ------
-
 $(function () {
 
   buildCountrySelect();
@@ -360,21 +352,6 @@ $(function () {
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/*
- * function sendQuery(url, query) {
-  var queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
-  $.ajax({
-    dataType: "jsonp", //jsonp
-    url: queryUrl,
-    success: function(data) {
-      console.log(data);
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  });
-}
-*/
 
 /* function testQuery() {
   const testQuery =
