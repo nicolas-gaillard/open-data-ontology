@@ -46,6 +46,36 @@ function getFilter(alc, srm, q_country, q_category, q_brewer) {
   return filter;
 }
 
+// Query when you click on 'See address'
+// -------------------------------------
+function getBrewerAddress(address) {
+  const url = "http://localhost:3030/open-beer/sparql";
+
+  let addressId = address.split("#")[1];
+
+  let query = `
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX n1: <http://beer.beer/data#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+    SELECT DISTINCT ?address ?city ?state ?country ?gps
+    WHERE {
+      ?address a n1:address ;
+              n1:city ?city ;
+              n1:state ?state ;
+              n1:country ?country ;
+              n1:gps ?gps.
+      OPTIONAL { ?address  n1:gps  ?gps }
+      FILTER (?address = n1:${addressId})
+    }`;
+
+  // console.log(query);
+
+  getSparqlData(query, url, 'null');
+}
+
+// Query when you click on 'See brewer'
+// ------------------------------------
 function getBrewer(brewer) {
   const url = "http://localhost:3030/open-beer/sparql";
 
@@ -63,7 +93,7 @@ function getBrewer(brewer) {
         OPTIONAL { ?brewer  n1:website  ?website }
         FILTER (?brewer = n1:${brewId})
     }`;
-  getSparqlData(query, url, "null");
+  getSparqlData(query, url, "address");
 }
 
 function buildQuery() {
@@ -113,7 +143,7 @@ function getSparqlData(query, url, button) {
       // get the sparql variables from the 'head' of the data.
       var headerVars = data.head.vars;
       // using the vars, make some table headers and add them to the table;
-      var trHeaders = getTableHeaders(headerVars);
+      var trHeaders = getTableHeaders(headerVars, button);
       table.append(trHeaders);
       // grab the actual results from the data.
       var bindings = data.results.bindings;
@@ -128,6 +158,11 @@ function getSparqlData(query, url, button) {
           getBrewer($(this).val());
         });
       }
+      if (button == "address") {
+        $(".seeAddress").click(function () {
+          getBrewerAddress($(this).val());
+        });
+      }
     },
     error: function (error) {
       console.log("Error occured" + error);
@@ -135,12 +170,14 @@ function getSparqlData(query, url, button) {
   });
 }
 
-function getTableHeaders(headerVars) {
+function getTableHeaders(headerVars, button) {
   let trHeaders = "<tr><th></th>";
   for (let i in headerVars) {
     trHeaders += "<th>" + headerVars[i] + "</th>";
   }
-  trHeaders += "<th>details</th>"
+  if (button != 'null') {
+    trHeaders += "<th>details</th>"
+  }
   trHeaders += "</tr>";
   return trHeaders;
 }
@@ -156,8 +193,11 @@ function getTableRow(headerVars, rowData, cpt, button) {
       "<td><button value='" +
       rowData[headerVars[headerVars.length - 1]]["value"] +
       "' class='seeBrewer'>See brewer</button></td> </tr>";
-    // } else if (button == address) {
-    //     tr += "<td><button value='" + rowData[headerVars[0]]["value"] + "' class='seeMovieGenre'>Voir films</button></td> </tr>";
+
+  } else if (button == 'address') {
+    tr += "<td><button value='" +
+    rowData[headerVars[headerVars.length - 1]]["value"] +
+    "' class='seeAddress'>See address</button></td> </tr>";
   } else {
     tr += "</tr>";
   }
