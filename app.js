@@ -3,7 +3,7 @@ document.getElementById("test").onclick = function() {
 };
 
 document.getElementById("go").onclick = function() {
-  const url = "http://localhost:3030/open-beer/sparql";
+  const url = "http://griffon.tk:3030/tp/sparql";
   var prefix = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1:
     <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>`;
   let query = buildQuery();
@@ -11,7 +11,7 @@ document.getElementById("go").onclick = function() {
 };
 
 function getBrewer(brewer) {
-  const url = "http://localhost:3030/open-beer/sparql";
+  const url = "http://griffon.tk:3030/tp/sparql";
 
   let brewId = brewer.split("#")[1];
   let query = `
@@ -205,7 +205,7 @@ $(function() {
   const testQuery =
     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
 
-  const url = "http://localhost:3030/open-beer/query";
+  const url = "http://griffon.tk:3030/tp/query";
   let http = new XMLHttpRequest();
 
   http.open(
@@ -229,7 +229,7 @@ let sendQuery = function() {
   let query =
     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
 
-  let url = "http://localhost:3030/open-beer/sparql";
+  let url = "http://griffon.tk:3030/tp/sparql";
 
   let queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
   $.ajax({
