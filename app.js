@@ -50,7 +50,7 @@ function applyQuery(query, callback) {
       callback(data);
     },
     error: err => {
-      console.log("Error occured" + error);
+      console.log("Error occured" + err);
     }
   });
 }
@@ -134,7 +134,8 @@ function topBrewer(window, data) {
 }
 
 // ======================================= //
-
+// Hum, @nico, c'est pas bô ! :p
+//
 document.getElementById("test").onclick = function() {
   sendQuery();
 };
@@ -200,9 +201,9 @@ function getSparqlData(query, url, button) {
       table.append(trHeaders);
       // grab the actual results from the data.
       var bindings = data.results.bindings;
-      cpt = 1;
+      let cpt = 1;
       // for each result, make a table row and add it to the table.
-      for (rowIdx in bindings) {
+      for (let rowIdx in bindings) {
         table.append(getTableRow(headerVars, bindings[rowIdx], cpt, button));
         cpt++;
       }
@@ -260,11 +261,10 @@ function getTableCell(fieldName, rowData) {
 
 // When document is ready
 $(function() {
+  computeCountryToISO();
   // ============ /\ TOP /\ ================= //
 
   applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
-  a = 0;
-  //applyQuery(topBrewerQuery, data => (a = data));
 
   // ============ /\ MAP /\ ================= //
 
@@ -281,7 +281,6 @@ $(function() {
     }
   });
 
-  computeCountryToISO();
   applyQuery(mapRequest, data => mapProcess(basic, data));
 
   //nico part
@@ -342,49 +341,6 @@ $(function() {
       " SRM"
   );
 });
-
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-/*
- * function sendQuery(url, query) {
-  var queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
-  $.ajax({
-    dataType: "jsonp", //jsonp
-    url: queryUrl,
-    success: function(data) {
-      console.log(data);
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  });
-}
-*/
-
-/* function testQuery() {
-  const testQuery =
-    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
-
-  const url = "http://griffon.tk:3030/tp/query";
-  let http = new XMLHttpRequest();
-
-  http.open(
-    "GET",
-    url + "?query=" + encodeURIComponent(testQuery) + "&format=json",
-    true
-  );
-  http.onreadystatechange = () => {
-    if (http.readyState == 4 && http.status == 200) {
-      console.log(http.responseText);
-
-      let test = JSON.parse(http.responseText);
-      console.log(test);
-    }
-  };
-  http.send();
-}*/
 
 // url / query
 let sendQuery = function() {
