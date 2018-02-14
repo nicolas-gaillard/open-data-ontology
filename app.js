@@ -18,20 +18,21 @@ WHERE {
 }
 GROUP BY ?country`;
 
-const topBrewer = `
+const topBrewerQuery = `
 PREFIX n1: <http://beer.beer/data#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 
 SELECT (SAMPLE(?name) AS ?NAME) (COUNT(?beer) as ?nbbeer)
-  WHERE {
-?beer		  a 		n1:beer.
-?brewer   n1:brew ?beer;
-          rdfs:label ?name;
-          n1:locate ?adress.
+WHERE {
+  ?beer		  a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            rdfs:label ?name;
+            n1:locate ?adress.
 }
 GROUP BY ?name
 ORDER BY DESC(?nbbeer)
+LIMIT 10
 `;
 
 /*
@@ -95,6 +96,48 @@ function mapProcess(map, data) {
     }
   });
 }
+
+/*
+ * Add a div for top brewer
+ * @param {window} div -- jQuery div
+ * @param {number} int -- Number medal
+ * @param {text} string -- Description medal
+ */
+function addBrewer(window, number, text) {
+  let div =
+    `
+  <div class="stats_1">
+    <div class="full-circle">
+      <span class="text-medal">
+        ` +
+    String(number) +
+    `
+      </span>
+    </div>
+    <div class="full-text">
+    ` +
+    String(text) +
+    `
+    </div>
+  </div>`;
+  window.append(div);
+}
+
+function topBrewer(window, data) {
+  for (let rowIdx in data.results.bindings) {
+    addBrewer(
+      window,
+      data.results.bindings[rowIdx].nbbeer["value"],
+      data.results.bindings[rowIdx].NAME["value"]
+    );
+  }
+}
+
+// ============ /\ TOP /\ ================= //
+
+applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
+a = 0;
+//applyQuery(topBrewerQuery, data => (a = data));
 
 // ============ /\ MAP /\ ================= //
 
