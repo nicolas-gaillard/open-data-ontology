@@ -342,8 +342,8 @@ $(function () {
   $("#slider-range-alc").slider({
     range: true,
     min: 0,
-    max: 100,
-    values: [0, 100],
+    max: 40,
+    values: [0, 40],
     slide: function (event, ui) {
       $("#alcohol").val("°" + ui.values[0] + " - °" + ui.values[1]);
     }
