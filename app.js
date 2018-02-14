@@ -133,30 +133,6 @@ function topBrewer(window, data) {
   }
 }
 
-// ============ /\ TOP /\ ================= //
-
-applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
-a = 0;
-//applyQuery(topBrewerQuery, data => (a = data));
-
-// ============ /\ MAP /\ ================= //
-
-// TODO : put this at the begining
-let basic = new Datamap({
-  element: document.getElementById("chart_div"),
-  geographyConfig: {
-    popupOnHover: false,
-    highlightOnHover: false
-  },
-  fills: {
-    defaultFill: "#ABDDA4",
-    RUS: "orange"
-  }
-});
-
-computeCountryToISO();
-applyQuery(mapRequest, data => mapProcess(basic, data));
-
 // ======================================= //
 
 document.getElementById("test").onclick = function() {
@@ -282,10 +258,34 @@ function getTableCell(fieldName, rowData) {
   return td;
 }
 
-// JQuery
-// ------
-
+// When document is ready
 $(function() {
+  // ============ /\ TOP /\ ================= //
+
+  applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
+  a = 0;
+  //applyQuery(topBrewerQuery, data => (a = data));
+
+  // ============ /\ MAP /\ ================= //
+
+  // TODO : put this at the begining
+  let basic = new Datamap({
+    element: document.getElementById("chart_div"),
+    geographyConfig: {
+      popupOnHover: false,
+      highlightOnHover: false
+    },
+    fills: {
+      defaultFill: "#ABDDA4",
+      RUS: "orange"
+    }
+  });
+
+  computeCountryToISO();
+  applyQuery(mapRequest, data => mapProcess(basic, data));
+
+  //nico part
+
   $("#country").selectmenu();
 
   $("#brewers").selectmenu();
