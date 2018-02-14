@@ -4,26 +4,160 @@
  *
  */
 const sourceURL = "http://griffon.tk:3030/tp/sparql";
+let countryToISO = {};
+const mapRequest = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (SAMPLE(?country) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer 		a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            n1:locate ?adress.
+  ?adress	  n1:country ?country.
+}
+GROUP BY ?country`;
+
+const topBrewerQuery = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?name) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer		  a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            rdfs:label ?name;
+            n1:locate ?adress.
+}
+GROUP BY ?name
+ORDER BY DESC(?nbbeer)
+LIMIT 10
+`;
 
 /*
  * Send query to server
  * @param {query} string - Sparql Query
  * @param {process} function - Function to apply when success 
  */
-function applyQuery(query, process) {
+function applyQuery(query, callback) {
   let queryUrl =
     sourceURL + "?query=" + encodeURIComponent(query) + "&format=json";
   $.ajax({
     dataType: "jsonp",
     url: queryUrl,
     success: data => {
-      process(data);
+      callback(data);
     },
     error: err => {
       console.log("Error occured" + error);
     }
   });
 }
+
+/*
+ * Compute dico to transform Country to ISO.
+ */
+function computeCountryToISO() {
+  let countries = Datamap.prototype.worldTopo.objects.world.geometries;
+  for (let country in countries) {
+    countryToISO[countries[country].properties.name] =
+      countries[country].properties.iso;
+  }
+}
+
+/*
+ * Process data to map
+ * @param {map} object - Datamap Object
+ * @param {data} JSON - Sparql query
+ */
+function mapProcess(map, data) {
+  let arrayJSON = [];
+  for (let rowIdx in data.results.bindings) {
+    let jsonTemp = {};
+    jsonTemp["name"] = data.results.bindings[rowIdx].NAME["value"];
+    jsonTemp["country"] = data.results.bindings[rowIdx].NAME["value"];
+    jsonTemp["centered"] =
+      countryToISO[data.results.bindings[rowIdx].NAME["value"]];
+    jsonTemp["radius"] =
+      2 * Math.log(parseFloat(data.results.bindings[rowIdx].nbbeer["value"]));
+    jsonTemp["fillKey"] = "RUS";
+    arrayJSON.push(jsonTemp);
+  }
+  map.bubbles(arrayJSON, {
+    popupTemplate: function(geo, data) {
+      return (
+        '<div class="hoverinfo">' +
+        data.country +
+        "</br>Nombre de bières:" +
+        Math.exp(data.radius / 2) +
+        ""
+      );
+    }
+  });
+}
+
+/*
+ * Add a div for top brewer
+ * @param {window} div -- jQuery div
+ * @param {number} int -- Number medal
+ * @param {text} string -- Description medal
+ */
+function addBrewer(window, number, text) {
+  let div =
+    `
+  <div class="stats_1">
+    <div class="full-circle">
+      <span class="text-medal">
+        ` +
+    String(number) +
+    `
+      </span>
+    </div>
+    <div class="full-text">
+    ` +
+    String(text) +
+    `
+    </div>
+  </div>`;
+  window.append(div);
+}
+
+function topBrewer(window, data) {
+  for (let rowIdx in data.results.bindings) {
+    addBrewer(
+      window,
+      data.results.bindings[rowIdx].nbbeer["value"],
+      data.results.bindings[rowIdx].NAME["value"]
+    );
+  }
+}
+
+// ============ /\ TOP /\ ================= //
+
+applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
+a = 0;
+//applyQuery(topBrewerQuery, data => (a = data));
+
+// ============ /\ MAP /\ ================= //
+
+// TODO : put this at the begining
+let basic = new Datamap({
+  element: document.getElementById("chart_div"),
+  geographyConfig: {
+    popupOnHover: false,
+    highlightOnHover: false
+  },
+  fills: {
+    defaultFill: "#ABDDA4",
+    RUS: "orange"
+  }
+});
+
+computeCountryToISO();
+applyQuery(mapRequest, data => mapProcess(basic, data));
+
+// ======================================= //
 
 document.getElementById("test").onclick = function() {
   sendQuery();
