@@ -4,7 +4,7 @@
 const express = require("express");
 const fs = require("fs");
 const hostname = "127.0.0.1";
-const port = 80;
+const port = process.env.PORT || 9865;
 const app = express();
 app.use(express.static(__dirname + "/"));
 
