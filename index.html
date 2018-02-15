@@ -16,81 +16,17 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
   </head>
 
-    <style>
-        body {
-            background: #e2e1e0;
-            text-align: center;
-            font-family: 'Roboto Condensed', sans-serif;
-            font-size: 14px;
-        }
-
-        table {
-            /* font-family: arial, sans-serif; */
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: .5em;
-        }
-
-        .beer-form {
-            background: #fff;
-            border-radius: 2px;
-            display: inline-block;
-            /* height: 80%; */
-            margin: 1rem;
-            position: relative;
-            width: 80%;
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-        }
-
-        .div-result {
-            background: #fff;
-            border-radius: 2px;
-            display: inline-block;
-            margin: 1rem;
-            position: relative;
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-        }
-
-        fieldset {
-            border: 0;
-        }
-
-        label {
-            display: block;
-            margin: 30px 0 0 0;
-        }
-
-        .overflow {
-            height: 200px;
-        }
-
-        .slider-range {
-            width: 30%;
-            margin: 0 auto;
-        }
-
-        #go {
-            font-size: 16px;
-        }
-    </style>
-</head>
-
-<body>
+  <body>
     <div>
-        <h1>Projet web sémantique : la diversité des bières 🍺</h1>
-        <div>
-            👨‍💻 Nicolas GAILLARD & Anthony GRIFFON 🙆‍♂️
-        </div>
+      <h2>Projet web sémantique</h2>
+      <div>
+        Nicolas GAILLARD & Anthony GRIFFON
+      </div>
     </div>
 
-    <!-- <div>
-        <button type="button" id="test">Query</button>
-    </div> -->
+    <div>
+      <button type="button" id="test">Query</button>
+    </div>
 
     <div>
       <label for="nb-results">Nombre de résultats à afficher :</label>
@@ -98,119 +34,114 @@
     </div>
 
     <div class="beer-form">
-        <h1>Find your soul mate ❤️</h1>
-        <form action="#">
+      <form action="#">
+        <p>
+          <label for="alcohol">Alcohol by volume</label>
+          <input type="text" id="alcohol" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div class="slider-range" id="slider-range-alc"></div>
 
-            <p>
-                <label for="alcohol">Alcohol by volume</label>
-                <input type="text" id="alcohol" readonly style="border:0; color:#f6931f; font-weight:bold;">
-            </p>
-            <div class="slider-range" id="slider-range-alc"></div>
+        <p>
+          <label for="ibu">International Bitterness Units</label>
+          <input type="text" id="ibu" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div class="slider-range" id="slider-range-ibu"></div>
 
-            <!-- <p>
-                <label for="ibu">International Bitterness Units</label>
-                <input type="text" id="ibu" readonly style="border:0; color:#f6931f; font-weight:bold;">
-            </p>
-            <div class="slider-range" id="slider-range-ibu"></div> -->
+        <p>
+          <label for="srm">Standard Reference Method (color of the beer)</label>
+          <input type="text" id="srm" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div class="slider-range" id="slider-range-srm"></div>
 
-            <p>
-                <label for="srm">Standard Reference Method (color of the beer)</label>
-                <input type="text" id="srm" readonly style="border:0; color:#f6931f; font-weight:bold;">
-            </p>
-            <div class="slider-range" id="slider-range-srm"></div>
+        <fieldset>
+          <label for="country">Select a country</label>
+          <select name="country" id="country">
+            <option value="Argentina">Argentina</option>
+            <option value="Aruba">Aruba</option>
+            <option value="Australia">Australia</option>
+            <option value="Austria">Austria</option>
+            <option value="Belgium">Belgium</option>
+            <option value="Belize">Belize</option>
+            <option value="Brazil">Brazil</option>
+            <option value="Canada">Canada</option>
+            <option value="China">China</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Croatia">Croatia</option>
+            <option value="Cuba">Cuba</option>
+            <option value="Czech Republic">Czech Republic</option>
+            <option value="Denmark">Denmark</option>
+            <option value="Egypt">Egypt</option>
+            <option value="El Salvador">El Salvador</option>
+            <option value="England">England</option>
+            <option value="Estonia">Estonia</option>
+            <option value="Finland">Finland</option>
+            <option value="France">France</option>
+            <option value="French Polynesia">French Polynesia</option>
+            <option value="Germany">Germany</option>
+            <option value="Greece">Greece</option>
+            <option value="Guatemala">Guatemala</option>
+            <option value="Honduras">Honduras</option>
+            <option value="Hungary">Hungary</option>
+            <option value="India">India</option>
+            <option value="Ireland">Ireland</option>
+            <option value="Israel">Israel</option>
+            <option value="Italy">Italy</option>
+            <option value="Jamaica">Jamaica</option>
+            <option value="Japan">Japan</option>
+            <option value="Kenya">Kenya</option>
+            <option value="Korea">Korea</option>
+            <option value="Latvia">Latvia</option>
+            <option value="Lithuania">Lithuania</option>
+            <option value="Macao">Macao</option>
+            <option value="Macedonia">Macedonia</option>
+            <option value="Mauritius">Mauritius</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Myanmar">Myanmar</option>
+            <option value="Namibia">Namibia</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="New Zealand">New Zealand</option>
+            <option value="Norway">Norway</option>
+            <option value="Panama">Panama</option>
+            <option value="Philippines">Philippines</option>
+            <option value="Poland">Poland</option>
+            <option value="Portugal">Portugal</option>
+            <option value="Russia">Russia</option>
+            <option value="Sierra Leone">Sierra Leone</option>
+            <option value="Slovakia">Slovakia</option>
+            <option value="Spain">Spain</option>
+            <option value="Sri Lanka">Sri Lanka</option>
+            <option value="Sweden">Sweden</option>
+            <option value="Switzerland">Switzerland</option>
+            <option value="Taiwan">Taiwan</option>
+            <option value="Thailand">Thailand</option>
+            <option value="Togo">Togo</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="United States">United States</option>
+          </select>
 
-            <fieldset>
-                <label for="country">Select a country</label>
-                <select name="country" id="country">
-                    <!-- <option value="Argentina">Argentina</option>
-                    <option value="Aruba">Aruba</option>
-                    <option value="Australia">Australia</option>
-                    <option value="Austria">Austria</option>
-                    <option value="Belgium">Belgium</option>
-                    <option value="Belize">Belize</option>
-                    <option value="Brazil">Brazil</option>
-                    <option value="Canada">Canada</option>
-                    <option value="China">China</option>
-                    <option value="Colombia">Colombia</option>
-                    <option value="Croatia">Croatia</option>
-                    <option value="Cuba">Cuba</option>
-                    <option value="Czech Republic">Czech Republic</option>
-                    <option value="Denmark">Denmark</option>
-                    <option value="Egypt">Egypt</option>
-                    <option value="El Salvador">El Salvador</option>
-                    <option value="England">England</option>
-                    <option value="Estonia">Estonia</option>
-                    <option value="Finland">Finland</option>
-                    <option value="France">France</option>
-                    <option value="French Polynesia">French Polynesia</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Greece">Greece</option>
-                    <option value="Guatemala">Guatemala</option>
-                    <option value="Honduras">Honduras</option>
-                    <option value="Hungary">Hungary</option>
-                    <option value="India">India</option>
-                    <option value="Ireland">Ireland</option>
-                    <option value="Israel">Israel</option>
-                    <option value="Italy">Italy</option>
-                    <option value="Jamaica">Jamaica</option>
-                    <option value="Japan">Japan</option>
-                    <option value="Kenya">Kenya</option>
-                    <option value="Korea">Korea</option>
-                    <option value="Latvia">Latvia</option>
-                    <option value="Lithuania">Lithuania</option>
-                    <option value="Macao">Macao</option>
-                    <option value="Macedonia">Macedonia</option>
-                    <option value="Mauritius">Mauritius</option>
-                    <option value="Mexico">Mexico</option>
-                    <option value="Myanmar">Myanmar</option>
-                    <option value="Namibia">Namibia</option>
-                    <option value="Netherlands">Netherlands</option>
-                    <option value="New Zealand">New Zealand</option>
-                    <option value="Norway">Norway</option>
-                    <option value="Panama">Panama</option>
-                    <option value="Philippines">Philippines</option>
-                    <option value="Poland">Poland</option>
-                    <option value="Portugal">Portugal</option>
-                    <option value="Russia">Russia</option>
-                    <option value="Sierra Leone">Sierra Leone</option>
-                    <option value="Slovakia">Slovakia</option>
-                    <option value="Spain">Spain</option>
-                    <option value="Sri Lanka">Sri Lanka</option>
-                    <option value="Sweden">Sweden</option>
-                    <option value="Switzerland">Switzerland</option>
-                    <option value="Taiwan">Taiwan</option>
-                    <option value="Thailand">Thailand</option>
-                    <option value="Togo">Togo</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="United States">United States</option> -->
-                    <option value=""></option>
-                </select>
+          <label for="brewers">Select a brewer</label>
+          <select name="brewers" id="brewers">
+            <option>Test</option>
+          </select>
 
-                <label for="brewers">Select a brewer</label>
-                <select name="brewers" id="brewers">
-                    <option value=""></option>
-                </select>
+          <label for="category">Select a category</label>
+          <select name="category" id="category">
+            <option value="belgian_and_french_ale">belgian and french ale</option>
+            <option value="british_ale">british ale</option>
+            <option value="german_ale">german ale</option>
+            <option value="german_lager">german lager</option>
+            <option value="irish_ale">irish ale</option>
+            <option value="north_american_ale">north american ale</option>
+            <option value="north_american_lager">north american lager</option>
+            <option value="other_lager">other lager</option>
+            <option value="other_style">other style</option>
+            <option value="blank">blank</option>
+            <option></option>
+          </select>
+        </fieldset>
 
-                <label for="category">Select a category</label>
-                <select name="category" id="category">
-                    <!-- <option value="belgian_and_french_ale">belgian and french ale</option>
-                    <option value="british_ale">british ale</option>
-                    <option value="german_ale">german ale</option>
-                    <option value="german_lager">german lager</option>
-                    <option value="irish_ale">irish ale</option>
-                    <option value="north_american_ale">north american ale</option>
-                    <option value="north_american_lager">north american lager</option>
-                    <option value="other_lager">other lager</option>
-                    <option value="other_style">other style</option>
-                    <option value="blank">blank</option> -->
-                    <option value=""></option>
-                </select>
-            </fieldset>
-
-            <button type="button" id="go">Find it!</button>
-        </form>
-
-
+        <button type="button" id="go">Query!</button>
+      </form>
 
     </div>
 
