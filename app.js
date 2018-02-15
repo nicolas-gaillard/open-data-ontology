@@ -3,7 +3,7 @@
  *
  *
  */
-const sourceURL = "http://griffon.tk:3030/tp/sparql";
+const sourceURL = "http://fuseki.prod.griffon.one/tp/sparql";
 let countryToISO = {};
 const mapRequest = `
 PREFIX n1: <http://beer.beer/data#>
@@ -35,10 +35,28 @@ ORDER BY DESC(?nbbeer)
 LIMIT 10
 `;
 
+const beerCategory = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?category) AS ?NAME) (COUNT(?beer) as ?cbeer)
+  WHERE {
+    ?beer 		a 		n1:beer;
+              n1:style	?category.
+    ?brewer		n1:brew		?beer;
+              n1:locate	?adress.
+    ?adress		n1:country	?country.
+  FILTER(?country = "United States").
+  }
+GROUP BY ?category
+ORDER BY DESC(?cbeer)
+`;
+
 /*
  * Send query to server
  * @param {query} string - Sparql Query
- * @param {process} function - Function to apply when success 
+ * @param {process} function - Function to apply when success
  */
 function applyQuery(query, callback) {
   let queryUrl =
@@ -133,6 +151,74 @@ function topBrewer(window, data) {
   }
 }
 
+function generateCategorySerie(variable, data) {
+  let arraySerie = [];
+  for (let rowIdx in data.results.bindings) {
+    let value = parseInt(data.results.bindings[rowIdx].cbeer["value"]);
+    if (value >= 20) {
+      arraySerie.push([
+        data.results.bindings[rowIdx].NAME["value"].substring(28),
+        value
+      ]);
+    }
+  }
+  addBarChart(arraySerie);
+}
+
+function addBarChart(arraySerie) {
+  console.log(arraySerie);
+  Highcharts.chart("usa_beer_category", {
+    chart: {
+      type: "column"
+    },
+    title: {
+      text: "Bière par catégorie"
+    },
+    subtitle: {
+      text: "États-Unis d'Amérique"
+    },
+    xAxis: {
+      type: "category",
+      labels: {
+        rotation: -45,
+        style: {
+          fontSize: "13px",
+          fontFamily: "Verdana, sans-serif"
+        }
+      }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: "Nombre de bières"
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    tooltip: {
+      pointFormat: "Nombre de bières: <b>{point.y:.1f}</b>"
+    },
+    series: [
+      {
+        name: "Population",
+        data: arraySerie,
+        dataLabels: {
+          enabled: true,
+          rotation: -90,
+          color: "#FFFFFF",
+          align: "right",
+          format: "{point.y:.1f}", // one decimal
+          y: 10, // 10 pixels down from the top
+          style: {
+            fontSize: "13px",
+            fontFamily: "Verdana, sans-serif"
+          }
+        }
+      }
+    ]
+  });
+}
 // ======================================= //
 // Hum, @nico, c'est pas bô ! :p
 //
@@ -141,7 +227,7 @@ document.getElementById("test").onclick = function() {
 };
 
 document.getElementById("go").onclick = function() {
-  const url = "http://griffon.tk:3030/tp/sparql";
+  const url = "http://fuseki.prod.griffon.one/tp/sparql";
   var prefix = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1:
     <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>`;
   let query = buildQuery();
@@ -149,7 +235,7 @@ document.getElementById("go").onclick = function() {
 };
 
 function getBrewer(brewer) {
-  const url = "http://griffon.tk:3030/tp/sparql";
+  const url = "http://fuseki.prod.griffon.one/tp/sparql";
 
   let brewId = brewer.split("#")[1];
   let query = `
@@ -262,6 +348,9 @@ function getTableCell(fieldName, rowData) {
 // When document is ready
 $(function() {
   computeCountryToISO();
+  // ============ /\ BAR /\ ================= //
+  let customSerie = [];
+  applyQuery(beerCategory, data => generateCategorySerie(customSerie, data));
   // ============ /\ TOP /\ ================= //
 
   applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
@@ -347,7 +436,7 @@ let sendQuery = function() {
   let query =
     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
 
-  let url = "http://griffon.tk:3030/tp/sparql";
+  let url = "http://fuseki.prod.griffon.one/tp/sparql";
 
   let queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
   $.ajax({
