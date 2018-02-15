@@ -4,6 +4,238 @@
 
 document.getElementById("go").onclick = function () {
   const url = "http://localhost:3030/open-beer/sparql";
+/*
+ *
+ *
+ *
+ */
+const sourceURL = "http://fuseki.prod.griffon.one/tp/sparql";
+let countryToISO = {};
+const mapRequest = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (SAMPLE(?country) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer 		a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            n1:locate ?adress.
+  ?adress	  n1:country ?country.
+}
+GROUP BY ?country`;
+
+const topBrewerQuery = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?name) AS ?NAME) (COUNT(?beer) as ?nbbeer)
+WHERE {
+  ?beer		  a 		n1:beer.
+  ?brewer   n1:brew ?beer;
+            rdfs:label ?name;
+            n1:locate ?adress.
+}
+GROUP BY ?name
+ORDER BY DESC(?nbbeer)
+LIMIT 10
+`;
+
+const beerCategory = `
+PREFIX n1: <http://beer.beer/data#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT (SAMPLE(?category) AS ?NAME) (COUNT(?beer) as ?cbeer)
+  WHERE {
+    ?beer 		a 		n1:beer;
+              n1:style	?category.
+    ?brewer		n1:brew		?beer;
+              n1:locate	?adress.
+    ?adress		n1:country	?country.
+  FILTER(?country = "United States").
+  }
+GROUP BY ?category
+ORDER BY DESC(?cbeer)
+`;
+
+/*
+ * Send query to server
+ * @param {query} string - Sparql Query
+ * @param {process} function - Function to apply when success
+ */
+function applyQuery(query, callback) {
+  let queryUrl =
+    sourceURL + "?query=" + encodeURIComponent(query) + "&format=json";
+  $.ajax({
+    dataType: "jsonp",
+    url: queryUrl,
+    success: data => {
+      callback(data);
+    },
+    error: err => {
+      console.log("Error occured" + err);
+    }
+  });
+}
+
+/*
+ * Compute dico to transform Country to ISO.
+ */
+function computeCountryToISO() {
+  let countries = Datamap.prototype.worldTopo.objects.world.geometries;
+  for (let country in countries) {
+    countryToISO[countries[country].properties.name] =
+      countries[country].properties.iso;
+  }
+}
+
+/*
+ * Process data to map
+ * @param {map} object - Datamap Object
+ * @param {data} JSON - Sparql query
+ */
+function mapProcess(map, data) {
+  let arrayJSON = [];
+  for (let rowIdx in data.results.bindings) {
+    let jsonTemp = {};
+    jsonTemp["name"] = data.results.bindings[rowIdx].NAME["value"];
+    jsonTemp["country"] = data.results.bindings[rowIdx].NAME["value"];
+    jsonTemp["centered"] =
+      countryToISO[data.results.bindings[rowIdx].NAME["value"]];
+    jsonTemp["radius"] =
+      2 * Math.log(parseFloat(data.results.bindings[rowIdx].nbbeer["value"]));
+    jsonTemp["fillKey"] = "RUS";
+    arrayJSON.push(jsonTemp);
+  }
+  map.bubbles(arrayJSON, {
+    popupTemplate: function(geo, data) {
+      return (
+        '<div class="hoverinfo">' +
+        data.country +
+        "</br>Nombre de bières:" +
+        Math.exp(data.radius / 2) +
+        ""
+      );
+    }
+  });
+}
+
+/*
+ * Add a div for top brewer
+ * @param {window} div -- jQuery div
+ * @param {number} int -- Number medal
+ * @param {text} string -- Description medal
+ */
+function addBrewer(window, number, text) {
+  let div =
+    `
+  <div class="stats_1">
+    <div class="full-circle">
+      <span class="text-medal">
+        ` +
+    String(number) +
+    `
+      </span>
+    </div>
+    <div class="full-text">
+    ` +
+    String(text) +
+    `
+    </div>
+  </div>`;
+  window.append(div);
+}
+
+function topBrewer(window, data) {
+  for (let rowIdx in data.results.bindings) {
+    addBrewer(
+      window,
+      data.results.bindings[rowIdx].nbbeer["value"],
+      data.results.bindings[rowIdx].NAME["value"]
+    );
+  }
+}
+
+function generateCategorySerie(variable, data) {
+  let arraySerie = [];
+  for (let rowIdx in data.results.bindings) {
+    let value = parseInt(data.results.bindings[rowIdx].cbeer["value"]);
+    if (value >= 20) {
+      arraySerie.push([
+        data.results.bindings[rowIdx].NAME["value"].substring(28),
+        value
+      ]);
+    }
+  }
+  addBarChart(arraySerie);
+}
+
+function addBarChart(arraySerie) {
+  console.log(arraySerie);
+  Highcharts.chart("usa_beer_category", {
+    chart: {
+      type: "column"
+    },
+    title: {
+      text: "Bière par catégorie"
+    },
+    subtitle: {
+      text: "États-Unis d'Amérique"
+    },
+    xAxis: {
+      type: "category",
+      labels: {
+        rotation: -45,
+        style: {
+          fontSize: "13px",
+          fontFamily: "Verdana, sans-serif"
+        }
+      }
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: "Nombre de bières"
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    tooltip: {
+      pointFormat: "Nombre de bières: <b>{point.y:.1f}</b>"
+    },
+    series: [
+      {
+        name: "Population",
+        data: arraySerie,
+        dataLabels: {
+          enabled: true,
+          rotation: -90,
+          color: "#FFFFFF",
+          align: "right",
+          format: "{point.y:.1f}", // one decimal
+          y: 10, // 10 pixels down from the top
+          style: {
+            fontSize: "13px",
+            fontFamily: "Verdana, sans-serif"
+          }
+        }
+      }
+    ]
+  });
+}
+// ======================================= //
+// Hum, @nico, c'est pas bô ! :p
+//
+document.getElementById("test").onclick = function() {
+  sendQuery();
+};
+
+document.getElementById("go").onclick = function() {
+  const url = "http://fuseki.prod.griffon.one/tp/sparql";
+
+  
   var prefix = `PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1:
     <http://beer.beer/data#> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>`;
   let query = buildQuery();
@@ -77,7 +309,7 @@ function getBrewerAddress(address) {
 // Query when you click on 'See brewer'
 // ------------------------------------
 function getBrewer(brewer) {
-  const url = "http://localhost:3030/open-beer/sparql";
+  const url = "http://fuseki.prod.griffon.one/tp/sparql";
 
   let brewId = brewer.split("#")[1];
   let query = `
@@ -137,6 +369,7 @@ function getSparqlData(query, url, button) {
     dataType: "jsonp",
     url: queryUrl,
     success: data => {
+      console.log(data);
       // get the table element
       var table = $("#results");
       table.text();
@@ -147,9 +380,9 @@ function getSparqlData(query, url, button) {
       table.append(trHeaders);
       // grab the actual results from the data.
       var bindings = data.results.bindings;
-      cpt = 1;
+      let cpt = 1;
       // for each result, make a table row and add it to the table.
-      for (rowIdx in bindings) {
+      for (let rowIdx in bindings) {
         table.append(getTableRow(headerVars, bindings[rowIdx], cpt, button));
         cpt++;
       }
@@ -333,6 +566,33 @@ $(function () {
   buildBrewerSelect();
   buildCategorySelect()
 
+  computeCountryToISO();
+  // ============ /\ BAR /\ ================= //
+  let customSerie = [];
+  applyQuery(beerCategory, data => generateCategorySerie(customSerie, data));
+  // ============ /\ TOP /\ ================= //
+
+  applyQuery(topBrewerQuery, data => topBrewer($("#top_beer"), data));
+
+  // ============ /\ MAP /\ ================= //
+
+  // TODO : put this at the begining
+  let basic = new Datamap({
+    element: document.getElementById("chart_div"),
+    geographyConfig: {
+      popupOnHover: false,
+      highlightOnHover: false
+    },
+    fills: {
+      defaultFill: "#ABDDA4",
+      RUS: "orange"
+    }
+  });
+
+  applyQuery(mapRequest, data => mapProcess(basic, data));
+
+  //nico part
+
   $("#country").selectmenu();
   $("#brewers").selectmenu();
   $("#category").selectmenu();
@@ -388,30 +648,23 @@ $(function () {
   );
 });
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-
-/* function testQuery() {
-  const testQuery =
+// url / query
+let sendQuery = function() {
+  let query =
     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX n1: <http://beer.beer/data#> SELECT DISTINCT ?beer_1 ?label_22 WHERE { ?beer_1 a n1:beer . ?beer_1 rdfs:label ?label_22 . } LIMIT 5";
 
-  const url = "http://localhost:3030/open-beer/query";
-  let http = new XMLHttpRequest();
+  let url = "http://fuseki.prod.griffon.one/tp/sparql";
 
-  http.open(
-    "GET",
-    url + "?query=" + encodeURIComponent(testQuery) + "&format=json",
-    true
-  );
-  http.onreadystatechange = () => {
-    if (http.readyState == 4 && http.status == 200) {
-      console.log(http.responseText);
+  let queryUrl = url + "?query=" + encodeURIComponent(query) + "&format=json";
+  $.ajax({
+    dataType: "jsonp", //jsonp
+    url: queryUrl,
 
-      let test = JSON.parse(http.responseText);
-      console.log(test);
+    success: function(data) {
+      console.log(data);
+    },
+    error: function(error) {
+      console.log(error);
     }
-  };
-  http.send();
-}*/
+  });
+};
